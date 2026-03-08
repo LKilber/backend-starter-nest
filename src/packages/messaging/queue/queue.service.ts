@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { Queue } from 'bullmq'
-import Redis from 'ioredis'
+import type { ConnectionOptions } from 'bullmq'
 
 import { QUEUE_CONNECTION } from './queue.constants'
 
@@ -10,7 +10,7 @@ export class QueueService {
 
   constructor(
     @Inject(QUEUE_CONNECTION)
-    private readonly redis: Redis,
+    private readonly redis: ConnectionOptions,
   ) {
     this.queue = new Queue('default', {
       connection: redis,

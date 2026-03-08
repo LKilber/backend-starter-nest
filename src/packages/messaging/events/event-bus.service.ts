@@ -1,6 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common'
 import { DiscoveryService, Reflector } from '@nestjs/core'
-
 import { EVENT_HANDLER_METADATA } from './event.constants'
 
 @Injectable()

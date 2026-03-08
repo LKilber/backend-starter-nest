@@ -1,12 +1,19 @@
 import Redis from 'ioredis'
-import { REDIS_CLIENT } from '../cache.constants'
+import { LoggerService } from 'src/packages/observability/logger/logger.service'
+import { REDIS_CLIENT } from '../constants/cache.constants'
 
 export const redisProvider = {
   provide: REDIS_CLIENT,
-  useFactory: () => {
-    return new Redis({
+  inject: [LoggerService],
+  useFactory: (logger: LoggerService) => {
+    const redis = new Redis({
       host: process.env.REDIS_HOST || 'localhost',
       port: Number(process.env.REDIS_PORT) || 6379,
     })
+
+    redis.on('connect', () => logger.info('Redis connected successfully'))
+    redis.on('error', (err) => logger.error('Redis connection error', err))
+
+    return redis
   },
 }

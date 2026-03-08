@@ -9,6 +9,6 @@ RUN pnpm install
 
 COPY . .
 
-RUN pnpm build
+RUN pnpm build:worker
 
-CMD ["node", "dist/apps/worker/server.js"]
+CMD ["node", "dist/src/apps/worker/server.js"]

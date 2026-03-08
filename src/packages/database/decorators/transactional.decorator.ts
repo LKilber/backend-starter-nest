@@ -1,4 +1,4 @@
-import { PrismaService } from '../prisma.service'
+import { PrismaService } from '../prisma.service';
 
 export function Transactional() {
   return function (
@@ -6,19 +6,16 @@ export function Transactional() {
     propertyKey: string,
     descriptor: PropertyDescriptor,
   ) {
-    const originalMethod = descriptor.value
+    const originalMethod = descriptor.value;
 
     descriptor.value = async function (...args: any[]) {
-      const prisma: PrismaService = this.prisma
+      const prisma = this.prisma as PrismaService;
 
-      return prisma.$transaction(async (tx) => {
-        return originalMethod.apply(
-          { ...this, prisma: tx },
-          args,
-        )
-      })
-    }
+      return (prisma as any).$transaction(async (tx: any) => {
+        return originalMethod.apply({ ...this, prisma: tx }, args);
+      });
+    };
 
-    return descriptor
-  }
+    return descriptor;
+  };
 }

@@ -9,6 +9,6 @@ RUN pnpm install
 
 COPY . .
 
-RUN pnpm build
+RUN pnpm build:api
 
-CMD ["node", "dist/apps/api/server.js"]
+CMD ["node", "dist/src/apps/api/server.js"]
